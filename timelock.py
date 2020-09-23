@@ -1,0 +1,38 @@
+from Crypto.Util import number
+
+# Time-Lock Puzzle - Rivest, Shamir, Wagner
+
+def genPrimes(psize):
+    p = number.getPrime(psize)
+    q = number.getPrime(psize)
+    while q == p:
+        q = number.getPrime(psize)
+    return p, q
+
+def timelock_lock(msg, t, psize=3072, n=None, p=None, q=None):
+    if n == None and p == None and q == None:
+        p, q = genPrimes(psize)
+        n = p * q
+    m = number.bytes_to_long(msg)
+    phi = (p - 1) * (q - 1)
+    u = pow(2, t, phi)
+    w = pow(2, u, n)
+    ctxt = m ^ w
+    return number.long_to_bytes(ctxt), w, n
+
+def timelock_unlock_master_key(ctxt, a):
+    m = number.bytes_to_long(ctxt)
+    ptxt = m ^ a
+    return number.long_to_bytes(ptxt)
+
+def timelock_unlock(ctxt, t, n):
+    c = number.bytes_to_long(ctxt)
+    a = 2
+    T = 0
+    while True:
+        T += 1
+        a = pow(2, pow(2, T), n)
+        if T == t:
+            break
+    m = c ^ a
+    return number.long_to_bytes(m)
