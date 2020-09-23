@@ -20,9 +20,9 @@ def timelock_lock(msg, t, psize=3072, n=None, p=None, q=None):
     ctxt = m ^ w
     return number.long_to_bytes(ctxt), w, n
 
-def timelock_unlock_master_key(ctxt, a):
+def timelock_unlock_master_key(ctxt, w):
     m = number.bytes_to_long(ctxt)
-    ptxt = m ^ a
+    ptxt = m ^ w
     return number.long_to_bytes(ptxt)
 
 def timelock_unlock(ctxt, t, n):
