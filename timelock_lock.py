@@ -1,6 +1,6 @@
 from timelock import timelock_lock
 
-psize = 128
+psize = 3072
 msg = input("Enter message to time lock: ")
 t = int(input("Enter number of T operations: "))
 ctxt, w, n = timelock_lock(str.encode(msg), t, psize)
