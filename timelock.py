@@ -10,7 +10,7 @@ def genPrimes(psize):
     return p, q
 
 def timelock_lock(msg, t, psize=3072, n=None, p=None, q=None):
-    if n == None and p == None and q == None:
+    if n == None or p == None or q or None:
         p, q = genPrimes(psize)
         n = p * q
     m = number.bytes_to_long(msg)
